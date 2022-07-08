@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -98,20 +98,19 @@ def depthFirstSearch(problem):
     root_node = (start_state, [])
     stack.push(root_node)
     closeSet = set()
-    closeSet.add(start_state)
 
     while not stack.isEmpty():
         node = stack.pop()
         state, action_list = node
+        closeSet.add(state)
         if problem.isGoalState(state):
             return action_list
         else:
             for succ in problem.getSuccessors(state):
                 new_state, new_action, _cost = succ
                 if new_state not in closeSet:
-                    new_node = (new_state, action_list+[new_action])
+                    new_node = (new_state, action_list + [new_action])
                     stack.push(new_node)
-                    closeSet.add(new_state)
 
 
 def breadthFirstSearch(problem):
@@ -127,20 +126,19 @@ def breadthFirstSearch(problem):
     root_node = (start_state, [])
     queue.push(root_node)
     closeSet = set()
-    closeSet.add(start_state)
 
     while not queue.isEmpty():
         node = queue.pop()
         state, action_list = node
+        closeSet.add(state)
         if problem.isGoalState(state):
             return action_list
         else:
             for succ in problem.getSuccessors(state):
                 new_state, new_action, _cost = succ
                 if new_state not in closeSet:
-                    new_node = (new_state, action_list+[new_action])
+                    new_node = (new_state, action_list + [new_action])
                     queue.push(new_node)
-                    closeSet.add(new_state)
 
 
 def uniformCostSearch(problem):
@@ -155,21 +153,20 @@ def uniformCostSearch(problem):
     # push root_node into pQueue, priority will be 0, which is the g_cost value
     pQueue.push(root_node, 0)
     closeSet = set()
-    closeSet.add(start_state)
 
     while not pQueue.isEmpty():
         node = pQueue.pop()
         state, action_list, g_cost = node
+        closeSet.add(state)
         if problem.isGoalState(state):
             return action_list
         else:
             for succ in problem.getSuccessors(state):
                 new_state, new_action, step_cost = succ
                 if new_state not in closeSet:
-                    new_node = (new_state, action_list+[new_action], g_cost+step_cost)
-                    pQueue.push(new_node, g_cost+step_cost)
-                    closeSet.add(new_state)
-
+                    new_node = (new_state, action_list + [new_action], g_cost + step_cost)
+                    pQueue.push(new_node, g_cost + step_cost)
+                    
 
 def nullHeuristic(state, problem=None):
     """
@@ -181,7 +178,35 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    # util.raiseNotDefined()
+
+    pQueue = util.PriorityQueue()
+    start_state = problem.getStartState()
+    h = heuristic(start_state, problem)
+    # root_node has start_state, action_list [], and g_cost 0
+    root_node = (start_state, [], 0)
+    q = 0 + h
+    # push root_node into pQueue, priority will be q, the q_value
+    pQueue.push(root_node, q)
+    closeSet = set()
+    best_g = dict()
+
+    while not pQueue.isEmpty():
+        node = pQueue.pop()
+        state, action_list, g_cost = node
+        if (not state in closeSet) or g_cost < best_g.get(state):
+            closeSet.add(state)
+            best_g[state] = g_cost
+            if problem.isGoalState(state):
+                return action_list
+            else:
+                for succ in problem.getSuccessors(state):
+                    new_state, new_action, step_cost = succ
+                    new_node = (new_state, action_list+[new_action], g_cost+step_cost)
+                    pQueue.push(new_node, g_cost+step_cost+heuristic(new_state, problem))
 
 
 # Abbreviations
@@ -191,11 +216,7 @@ astar = aStarSearch
 ucs = uniformCostSearch
 
 
-
 if __name__ == "__main__":
     problem = SearchProblem()
-    
+
     print(__name__)
-
-
-
