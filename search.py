@@ -72,6 +72,46 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+# def depthFirstSearch(problem):
+#     """
+#     Search the deepest nodes in the search tree first.
+
+#     Your search algorithm needs to return a list of actions that reaches the
+#     goal. Make sure to implement a graph search algorithm.
+
+#     To get started, you might want to try some of these simple commands to
+#     understand the search problem that is being passed in:
+
+#     print("Start:", problem.getStartState())
+#     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+#     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+#     """
+#     "*** YOUR CODE HERE ***"
+#     # print("Start:", problem.getStartState())
+#     # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+#     # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+#     # util.raiseNotDefined()
+
+#     stack = util.Stack()
+#     # a node consists of a search state and the action_list leading to this state
+#     start_state = problem.getStartState()
+#     root_node = (start_state, [])
+#     stack.push(root_node)
+#     closeSet = set()
+
+#     while not stack.isEmpty():
+#         node = stack.pop()
+#         state, action_list = node
+#         closeSet.add(state)
+#         if problem.isGoalState(state):
+#             return action_list
+#         else:
+#             for succ in problem.getSuccessors(state):
+#                 new_state, new_action, _cost = succ
+#                 if new_state not in closeSet:
+#                     new_node = (new_state, action_list + [new_action])
+#                     stack.push(new_node)
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -87,56 +127,89 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    # print("Start:", problem.getStartState())
+    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     # util.raiseNotDefined()
+
+    """
+    expansion time check
+    """
 
     stack = util.Stack()
     # a node consists of a search state and the action_list leading to this state
     start_state = problem.getStartState()
     root_node = (start_state, [])
     stack.push(root_node)
-    closeSet = set()
+    expanded = set()
 
     while not stack.isEmpty():
         node = stack.pop()
         state, action_list = node
-        closeSet.add(state)
-        if problem.isGoalState(state):
-            return action_list
-        else:
+        if state not in expanded:
+            # expand
+            expanded.add(state)
+            if problem.isGoalState(state):
+                return action_list
             for succ in problem.getSuccessors(state):
                 new_state, new_action, _cost = succ
-                if new_state not in closeSet:
-                    new_node = (new_state, action_list + [new_action])
-                    stack.push(new_node)
+                new_node = (new_state, action_list + [new_action])
+                stack.push(new_node)
+            
 
+# def breadthFirstSearch(problem):
+#     """Search the shallowest nodes in the search tree first."""
+#     "*** YOUR CODE HERE ***"
+
+#     """"
+#     generation check
+#     """
+
+#     queue = util.Queue()
+#     start_state = problem.getStartState()
+#     root_node = (start_state, [])
+#     queue.push(root_node)
+#     generated = set()
+#     generated.add(start_state)
+
+#     while not queue.isEmpty():
+#         node = queue.pop()
+#         state, action_list = node
+#         if problem.isGoalState(state):
+#             return action_list
+#         else:
+#             for succ in problem.getSuccessors(state):
+#                 new_state, new_action, _cost = succ
+#                 if new_state not in generated:
+#                     new_node = (new_state, action_list + [new_action])
+#                     queue.push(new_node)
+#                     generated.add(new_state)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    # util.raiseNotDefined()
+
+    """"
+    expansion check
+    """
 
     queue = util.Queue()
     start_state = problem.getStartState()
     root_node = (start_state, [])
     queue.push(root_node)
-    closeSet = set()
+    expanded = set()
 
     while not queue.isEmpty():
         node = queue.pop()
         state, action_list = node
-        closeSet.add(state)
-        if problem.isGoalState(state):
-            return action_list
-        else:
-            for succ in problem.getSuccessors(state):
-                new_state, new_action, _cost = succ
-                if new_state not in closeSet:
+        if state not in expanded:
+            # expand
+            expanded.add(state)
+            if problem.isGoalState(state):
+                return action_list
+            else:
+                for succ in problem.getSuccessors(state):
+                    new_state, new_action, _cost = succ
                     new_node = (new_state, action_list + [new_action])
                     queue.push(new_node)
 
@@ -146,27 +219,32 @@ def uniformCostSearch(problem):
     "*** YOUR CODE HERE ***"
     # util.raiseNotDefined()
 
+    """
+    expansion check
+    """
+
     pQueue = util.PriorityQueue()
     start_state = problem.getStartState()
     # root_node has start_state, action_list [], and g_cost value 0
     root_node = (start_state, [], 0)
     # push root_node into pQueue, priority will be 0, which is the g_cost value
     pQueue.push(root_node, 0)
-    closeSet = set()
+    expanded = set()
 
     while not pQueue.isEmpty():
         node = pQueue.pop()
         state, action_list, g_cost = node
-        closeSet.add(state)
-        if problem.isGoalState(state):
-            return action_list
-        else:
-            for succ in problem.getSuccessors(state):
-                new_state, new_action, step_cost = succ
-                if new_state not in closeSet:
+        if state not in expanded:
+            # expand
+            expanded.add(state)
+            if problem.isGoalState(state):
+                return action_list
+            else:
+                for succ in problem.getSuccessors(state):
+                    new_state, new_action, step_cost = succ
                     new_node = (new_state, action_list + [new_action], g_cost + step_cost)
                     pQueue.push(new_node, g_cost + step_cost)
-                    
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -178,9 +256,9 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    # print("Start:", problem.getStartState())
+    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     # util.raiseNotDefined()
 
     pQueue = util.PriorityQueue()
