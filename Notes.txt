@@ -1,0 +1,19 @@
+For dfs in this proj,
+generation time check won't get the exact solution as expected by the test
+
+for test_cases/q1/graph_bfs_vs_dfs.test
+starting from the root node, state A,
+when expanding A, generating B, G, and D,
+at generation time of B, G, and D, they are checked if they are goals
+because G is a goal state,
+so, dfs will directly return A->G as the solution
+however, the test is looking for a deeper solution......
+
+
+also, because in the assignment spec, it is stated that we are supposed to avoid expand the already visited states/nodes
+we can see that in this project, expanding a node = visiting a node
+so, here, instead of keeping all generated states, 
+we need to keep all expanded states
+
+
+

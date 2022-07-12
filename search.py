@@ -61,19 +61,9 @@ class SearchProblem:
         """
         util.raiseNotDefined()
 
-
-def tinyMazeSearch(problem):
-    """
-    Returns a sequence of moves that solves tinyMaze.  For any other maze, the
-    sequence of moves will be incorrect, so only use this for tinyMaze.
-    """
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST
-    return  [s, s, w, s, w, w, s, w]
-
+"""
 # def depthFirstSearch(problem):
-#     """
+#     '''
 #     Search the deepest nodes in the search tree first.
 
 #     Your search algorithm needs to return a list of actions that reaches the
@@ -85,32 +75,77 @@ def tinyMazeSearch(problem):
 #     print("Start:", problem.getStartState())
 #     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
 #     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-#     """
+#     '''
 #     "*** YOUR CODE HERE ***"
-#     # print("Start:", problem.getStartState())
-#     # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-#     # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
 #     # util.raiseNotDefined()
+#     '''
+#     generation time check, can find shorter solutions, but not OK for this project test cases
+#     '''
 
 #     stack = util.Stack()
 #     # a node consists of a search state and the action_list leading to this state
 #     start_state = problem.getStartState()
+#     if problem.isGoalState(start_state):
+#         return []
 #     root_node = (start_state, [])
 #     stack.push(root_node)
-#     closeSet = set()
+#     generated = set()
+#     generated.add(start_state)
 
 #     while not stack.isEmpty():
 #         node = stack.pop()
 #         state, action_list = node
-#         closeSet.add(state)
 #         if problem.isGoalState(state):
 #             return action_list
 #         else:
 #             for succ in problem.getSuccessors(state):
 #                 new_state, new_action, _cost = succ
-#                 if new_state not in closeSet:
+#                 if problem.isGoalState(new_state):
+#                     return action_list + [new_action]
+#                 if new_state not in generated:
 #                     new_node = (new_state, action_list + [new_action])
 #                     stack.push(new_node)
+#                     generated.add(new_state)
+
+
+# def breadthFirstSearch(problem):
+#     '''Search the shallowest nodes in the search tree first.'''
+#     "*** YOUR CODE HERE ***"
+#     '''
+#     generation check
+#     '''
+#     queue = util.Queue()
+#     start_state = problem.getStartState()
+#     root_node = (start_state, [])
+#     queue.push(root_node)
+#     generated = set()
+#     generated.add(start_state)
+
+#     while not queue.isEmpty():
+#         node = queue.pop()
+#         state, action_list = node
+#         if problem.isGoalState(state):
+#             return action_list
+#         else:
+#             for succ in problem.getSuccessors(state):
+#                 new_state, new_action, _cost = succ
+#                 if new_state not in generated:
+#                     new_node = (new_state, action_list + [new_action])
+#                     queue.push(new_node)
+#                     generated.add(new_state)
+"""
+
+
+def tinyMazeSearch(problem):
+    """
+    Returns a sequence of moves that solves tinyMaze.  For any other maze, the
+    sequence of moves will be incorrect, so only use this for tinyMaze.
+    """
+    from game import Directions
+    s = Directions.SOUTH
+    w = Directions.WEST
+    return  [s, s, w, s, w, w, s, w]
+
 
 def depthFirstSearch(problem):
     """
@@ -127,9 +162,6 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    # print("Start:", problem.getStartState())
-    # print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    # print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     # util.raiseNotDefined()
 
     """
@@ -156,34 +188,6 @@ def depthFirstSearch(problem):
                 new_node = (new_state, action_list + [new_action])
                 stack.push(new_node)
             
-
-# def breadthFirstSearch(problem):
-#     """Search the shallowest nodes in the search tree first."""
-#     "*** YOUR CODE HERE ***"
-
-#     """"
-#     generation check
-#     """
-
-#     queue = util.Queue()
-#     start_state = problem.getStartState()
-#     root_node = (start_state, [])
-#     queue.push(root_node)
-#     generated = set()
-#     generated.add(start_state)
-
-#     while not queue.isEmpty():
-#         node = queue.pop()
-#         state, action_list = node
-#         if problem.isGoalState(state):
-#             return action_list
-#         else:
-#             for succ in problem.getSuccessors(state):
-#                 new_state, new_action, _cost = succ
-#                 if new_state not in generated:
-#                     new_node = (new_state, action_list + [new_action])
-#                     queue.push(new_node)
-#                     generated.add(new_state)
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
