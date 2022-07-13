@@ -289,6 +289,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
                     new_state, new_action, step_cost = succ
                     new_node = (new_state, action_list+[new_action], g_cost+step_cost)
                     pQueue.push(new_node, g_cost+step_cost+heuristic(new_state, problem))
+                    # new_f = g_cost + step_cost + heuristic(new_state, problem)
+                    # old_f = g_cost + heuristic(state, problem)
+                    # if old_f > new_f:
+                    #     print("############## inconsistent ##############")
 
 
 # Abbreviations
