@@ -34,8 +34,6 @@ description for details.
 Good luck and happy searching!
 """
 
-from os import stat
-from struct import pack
 from game import Directions
 from game import Agent
 from game import Actions
@@ -521,7 +519,11 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # util.raiseNotDefined()
+        actions = search.bfs(problem)
+        # actions = search.dfs(problem)
+        # actions = search.astar(problem, manhattanHeuristic) # manhattanHeuristic not suitable for AnyFoodSearchProblem
+        return actions
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -557,7 +559,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # util.raiseNotDefined()
+        return self.food[x][y]
 
 def mazeDistance(point1, point2, gameState):
     """
